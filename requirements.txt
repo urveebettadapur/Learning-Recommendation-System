@@ -1,0 +1,68 @@
+# ==========================
+# Core
+# ==========================
+numpy
+pandas
+
+# ==========================
+# Visualization
+# ==========================
+matplotlib
+seaborn
+plotly
+
+# ==========================
+# Machine Learning
+# ==========================
+scikit-learn
+xgboost
+lightgbm
+joblib
+
+# ==========================
+# Jupyter
+# ==========================
+jupyter
+notebook
+ipykernel
+
+# ==========================
+# FastAPI Backend
+# ==========================
+fastapi
+uvicorn
+
+# ==========================
+# Database
+# ==========================
+sqlalchemy
+psycopg2-binary
+alembic
+
+# ==========================
+# Data Validation
+# ==========================
+pydantic
+pydantic-settings
+
+# ==========================
+# Authentication
+# ==========================
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+
+# ==========================
+# Environment Variables
+# ==========================
+python-dotenv
+
+# ==========================
+# API Requests
+# ==========================
+requests
+
+# ==========================
+# Utilities
+# ==========================
+tqdm

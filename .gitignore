@@ -1,0 +1,26 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Trained ML models (optional)
+# Uncomment if your models become large
+# *.pkl
+
+# PostgreSQL
+*.db
