@@ -1,25 +1,29 @@
 import pandas as pd
 import joblib
 
-from pathlib import Path
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from config import (
+    DATA_PATH,
+    MODELS_DIR
+)
+
 
 def train():
+    """
+    Train the TF-IDF recommendation model and save all
+    required artifacts for inference.
+    """
 
     # ----------------------------------------------------
-    # Project Paths
+    # Create Models Folder
     # ----------------------------------------------------
 
-    BASE_DIR = Path(__file__).resolve().parent
-
-    DATA_PATH = BASE_DIR / "data" / "processed" / "personalized_learning_processed.csv"
-
-    MODELS_DIR = BASE_DIR / "models"
-
-    MODELS_DIR.mkdir(exist_ok=True)
+    MODELS_DIR.mkdir(
+        parents=True,
+        exist_ok=True
+    )
 
     # ----------------------------------------------------
     # Load Dataset
@@ -29,7 +33,7 @@ def train():
 
     df = pd.read_csv(DATA_PATH)
 
-    print(f"Dataset Loaded Successfully")
+    print("Dataset Loaded Successfully")
     print(f"Shape : {df.shape}")
 
     # ----------------------------------------------------
@@ -112,6 +116,10 @@ def train():
         df,
         MODELS_DIR / "course_data.pkl"
     )
+
+    # ----------------------------------------------------
+    # Training Summary
+    # ----------------------------------------------------
 
     print("\n==========================================")
     print(" Training Completed Successfully ")
