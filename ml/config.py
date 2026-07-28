@@ -25,3 +25,27 @@ MODELS_DIR = (
     BASE_DIR
     / "models"
 )
+
+# ----------------------------------------------------
+# Model Files
+# ----------------------------------------------------
+
+TFIDF_PATH = (
+    MODELS_DIR
+    / "tfidf_vectorizer.pkl"
+)
+
+COSINE_PATH = (
+    MODELS_DIR
+    / "cosine_similarity.pkl"
+)
+
+INDICES_PATH = (
+    MODELS_DIR
+    / "course_indices.pkl"
+)
+
+COURSE_DATA_PATH = (
+    MODELS_DIR
+    / "course_data.pkl"
+)
