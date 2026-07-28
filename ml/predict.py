@@ -1,5 +1,7 @@
 import joblib
 
+from difflib import get_close_matches
+
 from config import (
     TFIDF_PATH,
     COSINE_PATH,
@@ -18,7 +20,6 @@ class CourseRecommender:
 
         print("Loading trained recommendation model...")
 
-        # Load saved artifacts
         self.tfidf = joblib.load(TFIDF_PATH)
         self.cosine_sim = joblib.load(COSINE_PATH)
         self.indices = joblib.load(INDICES_PATH)
@@ -26,51 +27,115 @@ class CourseRecommender:
 
         print("Recommendation model loaded successfully!")
 
-         # Temporary debugging
-        print("\nAvailable Courses:")
-        print(self.df["name"].head(10))
+    def find_course(self, user_input):
+        """
+        Finds the correct course name using:
+        1. Case-insensitive exact match
+        2. Partial match
+        3. Close match suggestions
+        """
+
+        user_input = user_input.strip().lower()
+
+        # -----------------------------
+        # Case-insensitive lookup
+        # -----------------------------
+
+        course_lookup = {
+            name.lower(): name
+            for name in self.indices.index
+        }
+
+        if user_input in course_lookup:
+            return course_lookup[user_input]
+
+        # -----------------------------
+        # Partial matches
+        # -----------------------------
+
+        partial_matches = [
+            name
+            for name in self.indices.index
+            if user_input in name.lower()
+        ]
+
+        if len(partial_matches) == 1:
+            return partial_matches[0]
+
+        elif len(partial_matches) > 1:
+
+            print("\nMultiple matching courses found:\n")
+
+            for i, course in enumerate(
+                partial_matches,
+                start=1
+            ):
+                print(f"{i}. {course}")
+
+            while True:
+
+                try:
+
+                    choice = int(
+                        input("\nChoose a course number: ")
+                    )
+
+                    if 1 <= choice <= len(partial_matches):
+                        return partial_matches[choice - 1]
+
+                    print("Invalid choice.")
+
+                except ValueError:
+
+                    print("Please enter a valid number.")
+
+        # -----------------------------
+        # Close match suggestions
+        # -----------------------------
+
+        suggestions = get_close_matches(
+            user_input,
+            self.indices.index,
+            n=5,
+            cutoff=0.4
+        )
+
+        if suggestions:
+
+            print("\nDid you mean:\n")
+
+            for suggestion in suggestions:
+                print(f"- {suggestion}")
+
+        raise ValueError(
+            f"\nCourse '{user_input}' not found."
+        )
 
     def recommend(self, course_name, top_n=5):
         """
         Recommend the top N similar courses.
-
-        Parameters
-        ----------
-        course_name : str
-            Name of the course selected by the user.
-
-        top_n : int
-            Number of recommendations to return.
-
-        Returns
-        -------
-        list
-            List of recommended courses.
         """
 
-        # Check whether the course exists
-        if course_name not in self.indices.index:
-            raise ValueError(
-                f"Course '{course_name}' not found."
-            )
+        course_name = self.find_course(course_name)
+        print(f"\nUsing course: {course_name}")
 
-        # Get index of selected course
         idx = self.indices[course_name]
 
-        # Get similarity scores
         similarity_scores = list(
-            enumerate(self.cosine_sim[idx])
+            enumerate(
+                self.cosine_sim[idx]
+            )
         )
 
-        # Sort by similarity score
         similarity_scores = sorted(
             similarity_scores,
             key=lambda x: x[1],
             reverse=True
         )
 
-        # Ignore the first result (same course)
-        similarity_scores = similarity_scores[1: top_n + 1]
+        similarity_scores = similarity_scores[
+            1: top_n + 1
+        ]
 
         recommendations = []
 
