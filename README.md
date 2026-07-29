@@ -27,7 +27,7 @@ An AI-powered Learning Recommendation System that recommends similar courses usi
 - Pandas
 - Scikit-learn
 - Joblib
-- FastAPI (Backend - In Progress)
+- FastAPI
 
 ---
 
