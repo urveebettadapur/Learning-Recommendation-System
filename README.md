@@ -146,7 +146,6 @@ python ml/predict.py
 
 ## Future Improvements
 
-- FastAPI API Endpoints
 - Frontend User Interface
 - User Authentication
 - Hybrid Recommendation System
