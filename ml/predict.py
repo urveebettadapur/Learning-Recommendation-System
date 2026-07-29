@@ -2,7 +2,7 @@ import joblib
 
 from difflib import get_close_matches
 
-from config import (
+from ml.config import (
     TFIDF_PATH,
     COSINE_PATH,
     INDICES_PATH,
