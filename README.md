@@ -39,8 +39,11 @@ Learning-Recommendation-System/
 │   ├── database/
 │   ├── models/
 │   ├── routes/
+│   │   └── recommendation.py
 │   ├── schemas/
+│   │   └── recommendation.py
 │   ├── services/
+│   │   └── recommendation_service.py
 │   ├── .env
 │   └── main.py
 │
