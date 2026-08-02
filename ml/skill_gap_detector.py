@@ -18,7 +18,7 @@ class SkillGapDetector:
     def get_required_skills(
         self,
         target_skill,
-        max_depth=2
+        max_depth=1
     ):
 
 
