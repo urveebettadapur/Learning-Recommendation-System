@@ -67,7 +67,8 @@ for _, row in df.iterrows():
                     graph.add_edge(
                         skill,
                         prereq,
-                        relation="requires"
+                        relation="requires",
+                        weight= 1.0
                     )
 
                     new_edges += 1
