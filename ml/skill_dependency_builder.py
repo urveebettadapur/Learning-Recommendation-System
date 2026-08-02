@@ -1,167 +1,91 @@
-import pandas as pd
 import pickle
-import os
+import pandas as pd
+from pathlib import Path
 
-from config import DATA_PATH
+from config import DATA_PATH, KNOWLEDGE_GRAPH_PATH
 
 
+print("Loading dataset...")
 
-def clean_skills(value):
+df = pd.read_csv(DATA_PATH)
 
-    if pd.isna(value):
-        return []
+print("Loading knowledge graph...")
 
-    return [
-        x.strip()
-        for x in str(value)
-        .replace(";", ",")
-        .split(",")
-        if x.strip()
+with open(KNOWLEDGE_GRAPH_PATH, "rb") as f:
+    graph = pickle.load(f)
+
+
+print("Building strict skill dependencies...")
+
+
+new_edges = 0
+
+
+for _, row in df.iterrows():
+
+    # Skills taught by the course
+    skills = []
+
+    if isinstance(row.get("skills"), str):
+        skills.extend(
+            [s.strip() for s in row["skills"].split(",")]
+        )
+
+
+    # Course prerequisites
+    prerequisites = []
+
+    if isinstance(row.get("prerequisites"), str):
+        prerequisites.extend(
+            [p.strip() for p in row["prerequisites"].split(",")]
+        )
+
+
+    # Remove empty values
+
+    skills = [
+        s for s in skills
+        if s and s in graph.nodes
+    ]
+
+    prerequisites = [
+        p for p in prerequisites
+        if p and p in graph.nodes
     ]
 
 
+    # Create prerequisite relationships
 
-def build_skill_dependencies():
+    for prereq in prerequisites:
 
+        for skill in skills:
 
-    print("Loading dataset...")
+            if prereq != skill:
 
+                if not graph.has_edge(prereq, skill):
 
-    df = pd.read_csv(DATA_PATH)
-
-
-
-    BASE_DIR = os.path.dirname(
-        os.path.abspath(__file__)
-    )
-
-
-    GRAPH_PATH = os.path.join(
-        BASE_DIR,
-        "knowledge_graph.pkl"
-    )
-
-
-
-    print("Loading knowledge graph...")
-
-
-    with open(
-        GRAPH_PATH,
-        "rb"
-    ) as f:
-
-        G = pickle.load(f)
-
-
-
-    print("Building skill dependencies...")
-
-
-
-    new_edges = 0
-
-
-
-    for _, row in df.iterrows():
-
-
-        prerequisites = clean_skills(
-            row["prerequisites"]
-        )
-
-
-        taught_skills = clean_skills(
-            row["core_skills"]
-        )
-
-
-
-        # prerequisite skill
-        #        |
-        #        |
-        #        v
-        #      course
-        #        |
-        #        |
-        #        v
-        #     taught skill
-
-
-        for prereq in prerequisites:
-
-
-            for skill in taught_skills:
-
-
-
-                if prereq == skill:
-                    continue
-
-
-
-                if (
-                    G.has_node(prereq)
-                    and
-                    G.has_node(skill)
-                ):
-
-
-                    if not G.has_edge(
+                    graph.add_edge(
+                        skill,
                         prereq,
-                        skill
-                    ):
+                        relation="requires"
+                    )
 
-
-                        G.add_edge(
-                            prereq,
-                            skill,
-                            relation="requires"
-                        )
-
-
-                        new_edges += 1
+                    new_edges += 1
 
 
 
+print("\nSkill dependencies added")
 
-    print("\nSkill dependencies added")
+print("New edges:", new_edges)
 
-    print(
-        "New dependency edges:",
-        new_edges
-    )
+print("Nodes:", graph.number_of_nodes())
 
-
-    print(
-        "Nodes:",
-        G.number_of_nodes()
-    )
-
-
-    print(
-        "Edges:",
-        G.number_of_edges()
-    )
+print("Edges:", graph.number_of_edges())
 
 
 
-    with open(
-        GRAPH_PATH,
-        "wb"
-    ) as f:
-
-        pickle.dump(
-            G,
-            f
-        )
+with open(KNOWLEDGE_GRAPH_PATH, "wb") as f:
+    pickle.dump(graph, f)
 
 
-    print("\nKnowledge graph updated")
-
-
-
-
-if __name__ == "__main__":
-
-    build_skill_dependencies()
+print("\nGraph updated")

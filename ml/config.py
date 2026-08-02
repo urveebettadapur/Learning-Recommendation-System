@@ -49,3 +49,8 @@ COURSE_DATA_PATH = (
     MODELS_DIR
     / "course_data.pkl"
 )
+
+KNOWLEDGE_GRAPH_PATH = (
+    BASE_DIR /
+    "knowledge_graph.pkl"
+)
