@@ -3,63 +3,80 @@ from graph_engine import KnowledgeGraphEngine
 
 class SkillGapDetector:
 
+
     def __init__(self):
 
         self.engine = KnowledgeGraphEngine()
 
 
 
-    # --------------------------------
-    # Recursively find all prerequisite
-    # skills required for target skill
-    # --------------------------------
+    # --------------------------------------
+    # Recursive prerequisite search
+    # with depth control
+    # --------------------------------------
 
     def get_required_skills(
         self,
-        target_skill
+        target_skill,
+        max_depth=2
     ):
 
-        required_skills = set()
+
+        required = set()
 
         visited = set()
 
 
-        def traverse(skill):
+
+        def traverse(skill, depth):
+
+
+            if depth > max_depth:
+                return
+
 
             if skill in visited:
                 return
 
+
             visited.add(skill)
 
 
-            prerequisites = self.engine.get_skill_prerequisites(
-                skill
+
+            prerequisites = (
+                self.engine
+                .get_skill_prerequisites(skill)
             )
+
 
 
             for prereq in prerequisites:
 
-                required_skills.add(
-                    prereq
+
+                required.add(prereq)
+
+
+                traverse(
+                    prereq,
+                    depth + 1
                 )
 
-                # recursively find deeper prerequisites
-
-                traverse(prereq)
 
 
-
-        traverse(target_skill)
-
-
-        return required_skills
-
+        traverse(
+            target_skill,
+            0
+        )
 
 
-    # --------------------------------
-    # Detect missing skills based on
-    # user's current knowledge
-    # --------------------------------
+        return required
+
+
+
+
+    # --------------------------------------
+    # Detect skill gap
+    # --------------------------------------
 
     def detect_skill_gap(
         self,
@@ -68,8 +85,10 @@ class SkillGapDetector:
     ):
 
 
-        required_skills = self.get_required_skills(
-            target_skill
+        required_skills = (
+            self.get_required_skills(
+                target_skill
+            )
         )
 
 
@@ -78,72 +97,56 @@ class SkillGapDetector:
         )
 
 
-        missing_skills = (
+        missing = (
             required_skills
             -
             current_skills
         )
 
 
-        return missing_skills
+        return missing
 
 
 
-    # --------------------------------
-    # Generate ordered learning path
-    # based on prerequisite hierarchy
-    # --------------------------------
+
+    # --------------------------------------
+    # Generate learning path
+    # --------------------------------------
 
     def generate_learning_path(
         self,
         missing_skills
     ):
 
-        learning_path = []
 
-
-        visited = set()
-
-
-        def add_skill(skill):
-
-            if skill in visited:
-                return
-
-            visited.add(skill)
-
-
-            prerequisites = self.engine.get_skill_prerequisites(
-                skill
-            )
-
-
-            for prereq in prerequisites:
-
-                if prereq in missing_skills:
-
-                    add_skill(prereq)
-
-
-
-            learning_path.append(skill)
-
+        path = []
 
 
         for skill in missing_skills:
 
-            add_skill(skill)
+
+            prerequisites = (
+                self.engine
+                .get_skill_prerequisites(skill)
+            )
+
+
+            path.append(
+                {
+                    "skill": skill,
+                    "prerequisites": prerequisites
+                }
+            )
+
+
+        return path
 
 
 
-        return learning_path
 
-
-
-    # --------------------------------
-    # Recommend courses that teach
-    # missing skills
-    # --------------------------------
+    # --------------------------------------
+    # Recommend courses
+    # --------------------------------------
 
     def recommend_courses(
         self,
@@ -151,40 +154,43 @@ class SkillGapDetector:
     ):
 
 
-        recommended_courses = set()
+        courses = set()
 
 
 
         for skill in missing_skills:
 
 
-            courses = self.engine.get_courses_for_skill(
-                skill
+            results = (
+                self.engine
+                .get_courses_for_skill(skill)
             )
 
 
-            for course in courses:
+            for course in results:
 
-                recommended_courses.add(
-                    course
-                )
+                courses.add(course)
 
 
 
-        return recommended_courses
+        return courses
 
 
 
 
 
-# --------------------------------
+# --------------------------------------
 # TEST
-# --------------------------------
+# --------------------------------------
 
 if __name__ == "__main__":
 
 
     detector = SkillGapDetector()
+
+
+
+    target_skill = "Deep Learning"
 
 
 
@@ -198,10 +204,6 @@ if __name__ == "__main__":
 
 
 
-    target_skill = "Deep Learning"
-
-
-
     print("\n==============================")
     print("TARGET SKILL:")
     print(target_skill)
@@ -211,8 +213,7 @@ if __name__ == "__main__":
     print("\nCURRENT SKILLS:")
 
     for skill in current_skills:
-
-        print("-", skill)
+        print("-",skill)
 
 
 
@@ -225,11 +226,13 @@ if __name__ == "__main__":
 
     print("\nMISSING SKILLS:")
 
+
+
     if missing:
 
         for skill in sorted(missing):
 
-            print("-", skill)
+            print("-",skill)
 
     else:
 
@@ -237,35 +240,42 @@ if __name__ == "__main__":
 
 
 
+
     print("\nLEARNING PATH:")
+
+
 
     path = detector.generate_learning_path(
         missing
     )
 
 
-    for index, skill in enumerate(path, start=1):
+    for item in path:
+
 
         print(
-            f"{index}. {skill}"
+            "\n",
+            item["skill"]
+        )
+
+
+        print(
+            "Prerequisites:",
+            item["prerequisites"]
         )
 
 
 
+
     print("\nRECOMMENDED COURSES:")
+
+
 
     courses = detector.recommend_courses(
         missing
     )
 
 
+    for course in list(courses)[:10]:
 
-    if courses:
-
-        for course in list(courses)[:10]:
-
-            print("-", course)
-
-    else:
-
-        print("No courses found")
+        print("-",course)
