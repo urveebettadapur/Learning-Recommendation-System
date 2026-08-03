@@ -1,69 +1,209 @@
 from graph_engine import KnowledgeGraphEngine
 from skill_gap_detector import SkillGapDetector
 
-import networkx as nx
-
 
 class LearningPathOptimizer:
 
+
     def __init__(self):
 
-        self.engine = KnowledgeGraphEngine()
-        self.detector = SkillGapDetector()
+        self.graph_engine = KnowledgeGraphEngine()
+
+        self.skill_detector = SkillGapDetector()
 
 
-    # --------------------------------------
-    # Build dependency graph
-    # --------------------------------------
 
-    def build_learning_graph(
+    # ----------------------------------------------------
+    # Expand missing skills with prerequisites recursively
+    # ----------------------------------------------------
+
+    def expand_dependencies(
         self,
-        missing_skills
+        skills
     ):
 
-        G = nx.DiGraph()
+        expanded = set()
 
         visited = set()
 
 
-        def add_skill(skill):
+
+        def traverse(skill):
 
             if skill in visited:
                 return
 
+
             visited.add(skill)
 
-            G.add_node(skill)
+            expanded.add(skill)
+
+
 
             prerequisites = (
-                self.engine.get_skill_prerequisites(skill)
+                self.graph_engine
+                .get_skill_prerequisites(skill)
             )
+
+
 
             for prereq in prerequisites:
 
-                if prereq in missing_skills:
-
-                    G.add_node(prereq)
-
-                    # prerequisite -> skill
-                    G.add_edge(
-                        prereq,
-                        skill
-                    )
-
-                    add_skill(prereq)
+                traverse(prereq)
 
 
-        for skill in missing_skills:
 
-            add_skill(skill)
+        for skill in skills:
 
-        return G
+            traverse(skill)
 
 
-    # --------------------------------------
-    # Optimize learning path
-    # --------------------------------------
+
+        return expanded
+
+
+
+
+    # ----------------------------------------------------
+    # Topological sorting
+    # Ensures prerequisites appear before skills
+    # ----------------------------------------------------
+
+    def topological_sort(
+        self,
+        skills
+    ):
+
+        ordered = []
+
+        visited = set()
+
+
+
+        def visit(skill):
+
+            if skill in visited:
+                return
+
+
+            visited.add(skill)
+
+
+
+            prerequisites = (
+                self.graph_engine
+                .get_skill_prerequisites(skill)
+            )
+
+
+
+            for prereq in prerequisites:
+
+                if prereq in skills:
+
+                    visit(prereq)
+
+
+
+            ordered.append(skill)
+
+
+
+        for skill in skills:
+
+            visit(skill)
+
+
+
+        return ordered
+
+
+
+
+    # ----------------------------------------------------
+    # Generate optimized learning path
+    # ----------------------------------------------------
+
+    def generate_learning_path(
+        self,
+        current_skills,
+        target_skill
+    ):
+
+
+        print("\nDetecting skill gaps...")
+
+
+
+        missing_skills = (
+
+            self.skill_detector
+            .detect_skill_gap(
+
+                current_skills,
+
+                target_skill
+
+            )
+
+        )
+
+
+
+        print(
+            "Missing skills:",
+            len(missing_skills)
+        )
+
+
+
+        # Expand hidden prerequisites
+
+        complete_skill_set = (
+
+            self.expand_dependencies(
+
+                missing_skills
+
+            )
+
+        )
+
+
+
+        # Remove already mastered skills
+
+        complete_skill_set -= set(
+            current_skills
+        )
+
+
+
+        # Order learning sequence
+
+        learning_path = (
+
+            self.topological_sort(
+
+                complete_skill_set
+
+            )
+
+        )
+
+
+
+        return learning_path
+
+
+
+
+    # ----------------------------------------------------
+    # Compatibility wrapper
+    #
+    # Required by recommendation_engine.py
+    #
+    # ----------------------------------------------------
 
     def optimize_learning_path(
         self,
@@ -71,91 +211,74 @@ class LearningPathOptimizer:
         target_skill
     ):
 
-        missing_skills = (
-            self.detector.detect_skill_gap(
-                current_skills,
-                target_skill
-            )
-        )
 
-        if not missing_skills:
-
-            return []
-
-
-        learning_graph = self.build_learning_graph(
-            missing_skills
+        return self.generate_learning_path(
+            current_skills,
+            target_skill
         )
 
 
-        try:
-
-            ordered_path = list(
-                nx.topological_sort(
-                    learning_graph
-                )
-            )
-
-        except nx.NetworkXUnfeasible:
-
-            # fallback if graph contains a cycle
-
-            ordered_path = sorted(
-                list(missing_skills)
-            )
-
-        return ordered_path
 
 
-# --------------------------------------
+
+# ----------------------------------------------------
 # TEST
-# --------------------------------------
+# ----------------------------------------------------
 
 if __name__ == "__main__":
 
+
     optimizer = LearningPathOptimizer()
 
-
-    current_skills = [
-
-        "Python Programming",
-        "NumPy",
-        "Pandas (Python Package)"
-
-    ]
 
 
     target_skill = "Deep Learning"
 
 
-    learning_path = optimizer.optimize_learning_path(
 
-        current_skills,
+    current_skills = [
 
-        target_skill
+        "Python Programming",
+
+        "NumPy",
+
+        "Pandas (Python Package)"
+
+    ]
+
+
+
+    roadmap = (
+
+        optimizer
+        .generate_learning_path(
+
+            current_skills,
+
+            target_skill
+
+        )
 
     )
 
 
-    print("\n==============================")
+
+    print("\n")
+
+    print("==============================")
 
     print("PERSONALIZED LEARNING PATH")
 
-    print("==============================\n")
+    print("==============================")
 
 
-    if learning_path:
 
-        for i, skill in enumerate(
+    for index, skill in enumerate(
+        roadmap,
+        start=1
+    ):
 
-            learning_path,
 
-            start=1
-
-        ):
-
-            print(f"{i}. {skill}")
-
-    else:
-
-        print("No learning path required.")
+        print(
+            f"{index}. {skill}"
+        )
