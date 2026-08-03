@@ -18,7 +18,7 @@ An AI-powered Learning Recommendation System that recommends similar courses usi
   - Case-Insensitive Match
   - Partial Match
   - Close Match Suggestions
-
+- Graph based matching
 ---
 
 ## Tech Stack
