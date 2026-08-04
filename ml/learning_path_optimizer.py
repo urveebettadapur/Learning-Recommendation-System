@@ -353,14 +353,16 @@ if __name__ == "__main__":
     current_skills = [
 
         "Python Programming",
+        
+        "Machine Learning",
 
-        "NumPy",
+        "Artificial Neural Networks",
 
-        "Pandas (Python Package)"
-
+        "PyTorch (Machine Learning Library)"
     ]
 
-
+    print("TEST PROFILE:")
+    print(current_skills)
 
     roadmap = (
 
