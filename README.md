@@ -1,61 +1,205 @@
-# 🎓 Learning Recommendation System
+# 🎓 Adaptive AI Learning Recommendation System
 
-An AI-powered Learning Recommendation System that recommends similar courses using **TF-IDF Vectorization** and **Cosine Similarity**. The project follows a modular machine learning workflow with ETL, model training, and prediction components.
+An AI-powered personalized learning platform that analyzes learner skills, identifies knowledge gaps, and generates optimized learning roadmaps using **Knowledge Graphs, Machine Learning, and Recommendation Algorithms**.
+
+The system combines:
+
+- Course recommendation using **TF-IDF Vectorization + Cosine Similarity**
+- Knowledge graph based prerequisite analysis
+- Skill gap detection
+- Personalized learning path optimization
+- Learning duration estimation
+- Difficulty progression planning
+- REST API integration using FastAPI
+- React-based frontend interface
+
 
 ---
 
-## Features
+# 🚀 Features
 
-- ETL Pipeline (Extract, Transform, Load)
-- Data Preprocessing
-- Feature Engineering
-- TF-IDF Recommendation Engine
-- Cosine Similarity based Recommendations
-- Model Training Pipeline
-- Prediction Pipeline
-- Intelligent Course Search
-  - Exact Match
-  - Case-Insensitive Match
-  - Partial Match
-  - Close Match Suggestions
-- Graph based matching
+## 1. Intelligent Course Recommendation System
+
+- TF-IDF based feature extraction
+- Cosine similarity recommendation engine
+- Course ranking based on learner requirements
+- Exact, partial, and fuzzy course matching
+
+
+## 2. Knowledge Graph Learning Engine
+
+- Builds relationships between:
+    - Courses
+    - Skills
+    - Prerequisites
+
+Supports:
+
+- Skill dependency discovery
+- Prerequisite traversal
+- Graph-based learning recommendations
+
+
+## 3. Skill Gap Detection
+
+Given:
+
+- Learner's current skills
+- Target skill / career goal
+
+
+The system identifies:
+
+- Missing skills
+- Required prerequisites
+- Knowledge gaps
+
+
+Example:
+
+```
+Current Skills:
+Python Programming
+
+Target:
+Deep Learning
+
+
+Missing:
+- Machine Learning
+- Artificial Intelligence
+- PyTorch
+- Neural Networks
+```
+
 ---
 
-## Tech Stack
+## 4. Personalized Learning Path Optimization
+
+Generates:
+
+- Recommended learning sequence
+- Dependency-aware roadmap
+- Difficulty progression
+- Estimated completion duration
+
+
+Example:
+
+```
+Python
+   ↓
+Machine Learning
+   ↓
+Artificial Neural Networks
+   ↓
+Deep Learning
+```
+
+
+---
+
+## 5. Full Stack AI Application
+
+Frontend:
+
+- React + Vite
+- Axios API integration
+
+
+Backend:
+
+- FastAPI
+- REST endpoints
+- Service based architecture
+
+
+Machine Learning:
+
+- Scikit-learn
+- NetworkX
+- Knowledge Graph Engine
+
+
+---
+
+# 🛠 Tech Stack
+
+## Backend
 
 - Python
-- Pandas
-- Scikit-learn
-- Joblib
 - FastAPI
+- Pydantic
+- Uvicorn
+
+
+## Machine Learning
+
+- Pandas
+- NumPy
+- Scikit-learn
+- TF-IDF
+- Cosine Similarity
+- NetworkX
+
+
+## Frontend
+
+- React
+- Vite
+- JavaScript
+- Axios
+
+
+## Development Tools
+
+- Git
+- GitHub
+- VS Code
+
 
 ---
 
-## Project Structure
+# 📂 Project Structure
 
+
+```text
 Learning-Recommendation-System/
 
+│
 ├── backend/
+│   │
 │   ├── database/
 │   ├── models/
+│   │
 │   ├── routes/
+│   │   ├── learning_path.py
 │   │   └── recommendation.py
+│   │
 │   ├── schemas/
+│   │   ├── learning_path.py
 │   │   └── recommendation.py
+│   │
 │   ├── services/
+│   │   ├── learning_path_service.py
 │   │   └── recommendation_service.py
+│   │
 │   ├── .env
-│   └── main.py
+│   ├── main.py
+│   └── __init__.py
+│
 │
 ├── data/
 │   └── processed/
 │       ├── personalized_learning_processed.csv
 │       └── personalized_learning_features.csv
 │
+│
 ├── docs/
 │   ├── api_documentation.md
 │   ├── architecture.md
 │   └── database_schema.md
+│
 │
 ├── etl/
 │   ├── config.py
@@ -64,99 +208,252 @@ Learning-Recommendation-System/
 │   ├── load.py
 │   └── pipeline.py
 │
+│
 ├── frontend/
+│   │
 │   ├── public/
+│   │
 │   ├── src/
+│   │   ├── api/
+│   │   │   └── api.js
+│   │   │
+│   │   ├── assets/
+│   │   │
 │   │   ├── components/
+│   │   │
 │   │   ├── pages/
+│   │   │
 │   │   ├── services/
+│   │   │
 │   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── index.css
 │   │   └── main.jsx
+│   │
 │   ├── package.json
+│   ├── package-lock.json
 │   └── vite.config.js
 │
+│
 ├── ml/
+│   │
 │   ├── data/
 │   │   ├── raw/
+│   │   │   └── personalized_learning.csv
+│   │   │
 │   │   └── processed/
+│   │       └── personalized_learning_processed.csv
+│   │
 │   ├── models/
 │   │   ├── tfidf_vectorizer.pkl
 │   │   ├── cosine_similarity.pkl
 │   │   ├── course_indices.pkl
 │   │   └── course_data.pkl
+│   │
 │   ├── notebooks/
 │   │   ├── eda.ipynb
 │   │   ├── feature_engineering.ipynb
 │   │   └── model_training.ipynb
+│   │
+│   ├── graph_builder.py
+│   ├── graph_engine.py
+│   ├── knowledge_graph.pkl
+│   ├── skill_dependency_builder.py
+│   ├── skill_gap_detector.py
+│   ├── learning_path_optimizer.py
+│   ├── roadmap_enhancer.py
+│   ├── recommendation_engine.py
+│   ├── course_ranking_engine.py
+│   ├── predict.py
 │   ├── config.py
-│   ├── train.py
-│   └── predict.py
+│   └── check_columns.py
+│
 │
 ├── postman/
 │   └── learning_recommendation_api.json
+│
 │
 ├── requirements.txt
 ├── README.md
 └── .gitignore
 
+```
+
 ---
 
-## How to Run
+# ▶️ Running the Project
 
-### 1. Install dependencies
+## Backend Setup
+
+Create environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate:
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Run the ETL Pipeline
+
+Run FastAPI:
 
 ```bash
-python etl/pipeline.py
+uvicorn backend.main:app --reload
 ```
 
-### 3. Train the Recommendation Model
 
-```bash
-python ml/train.py
+API Documentation:
+
+```
+http://127.0.0.1:8000/docs
 ```
 
-### 4. Run the Prediction Module
-
-```bash
-python ml/predict.py
-```
 
 ---
 
-## Current Status
+## Frontend Setup
 
-✅ ETL Pipeline
 
-✅ Data Preprocessing
+Navigate:
 
-✅ Feature Engineering
+```bash
+cd frontend
+```
 
-✅ Recommendation Engine
 
-✅ Model Training
+Install dependencies:
 
-✅ Prediction Module
+```bash
+npm install
+```
 
-✅ FastAPI Integration
+
+Run:
+
+```bash
+npm run dev
+```
+
+
+Frontend:
+
+```
+http://localhost:5173
+```
+
 
 ---
 
-## Future Improvements
+# 🔌 API Endpoints
 
-- Frontend User Interface
-- User Authentication
-- Hybrid Recommendation System
-- Docker Deployment
-- Cloud Deployment
+
+## Health Check
+
+```
+GET /health
+```
+
+
+## Course Recommendation
+
+```
+POST /recommend
+```
+
+
+## Adaptive Learning Path
+
+```
+POST /recommend-learning-path
+```
+
+
+Example Request:
+
+```json
+{
+  "goal_role":"ML Engineer",
+  "known_skills":[
+      "Python Programming",
+      "Machine Learning"
+  ],
+  "experience":"Intermediate"
+}
+```
+
+
+Example Response:
+
+```json
+{
+ "missing_skills":[
+    "Deep Learning",
+    "Artificial Intelligence"
+ ],
+ "estimated_duration":{
+    "total_hours":40,
+    "estimated_weeks":8
+ },
+ "learning_path":[
+    "Machine Learning",
+    "Deep Learning"
+ ]
+}
+```
+
 
 ---
 
-## Author
+# ✅ Current Status
 
-Developed as part of an AI/ML learning project focused on building an end-to-end Learning Recommendation System.
+✔ Data Processing Pipeline
+
+✔ Feature Engineering
+
+✔ ML Recommendation Engine
+
+✔ Knowledge Graph Construction
+
+✔ Skill Gap Detection
+
+✔ Learning Path Optimization
+
+✔ Duration Estimation
+
+✔ Difficulty Progression
+
+✔ FastAPI Backend
+
+✔ React Frontend Integration
+
+
+---
+
+# 🔮 Future Improvements
+
+- User authentication
+- Learner progress tracking
+- Database integration
+- Hybrid recommendation models
+- Reinforcement learning based path optimization
+- Docker deployment
+- Cloud deployment
+
+
+---
+
+# 👩‍💻 Author
+
+Developed as an AI/ML project focused on building an end-to-end adaptive personalized learning platform.
