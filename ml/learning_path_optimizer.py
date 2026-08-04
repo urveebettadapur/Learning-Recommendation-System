@@ -1,6 +1,6 @@
-from graph_engine import KnowledgeGraphEngine
-from skill_gap_detector import SkillGapDetector
-from roadmap_enhancer import RoadmapEnhancer
+from ml.graph_engine import KnowledgeGraphEngine
+from ml.skill_gap_detector import SkillGapDetector
+from ml.roadmap_enhancer import RoadmapEnhancer
 
 
 
@@ -353,7 +353,7 @@ if __name__ == "__main__":
     current_skills = [
 
         "Python Programming",
-        
+
         "Machine Learning",
 
         "Artificial Neural Networks",

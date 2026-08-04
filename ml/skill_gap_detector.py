@@ -1,4 +1,4 @@
-from graph_engine import KnowledgeGraphEngine
+from ml.graph_engine import KnowledgeGraphEngine
 
 
 class SkillGapDetector:
