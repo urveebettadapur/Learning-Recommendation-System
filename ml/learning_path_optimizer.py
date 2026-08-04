@@ -18,8 +18,7 @@ class LearningPathOptimizer:
 
 
     # ----------------------------------------------------
-    # Expand missing skills with prerequisites recursively
-    # Limited depth to avoid unrelated expansion
+    # Expand dependencies recursively
     # ----------------------------------------------------
 
     def expand_dependencies(
@@ -27,6 +26,7 @@ class LearningPathOptimizer:
         skills,
         max_depth=2
     ):
+
 
         expanded = set()
 
@@ -37,12 +37,15 @@ class LearningPathOptimizer:
             depth
         ):
 
+
             if depth > max_depth:
+
                 return
 
 
 
             if skill in expanded:
+
                 return
 
 
@@ -62,18 +65,26 @@ class LearningPathOptimizer:
 
             for prereq in prerequisites:
 
+
                 traverse(
+
                     prereq,
+
                     depth + 1
+
                 )
 
 
 
         for skill in skills:
 
+
             traverse(
+
                 skill,
+
                 0
+
             )
 
 
@@ -95,6 +106,7 @@ class LearningPathOptimizer:
 
         noisy_skills = {
 
+
             "Databricks",
 
             "Cloud Solutions",
@@ -113,7 +125,10 @@ class LearningPathOptimizer:
 
             "Data Security",
 
-            "Data Ethics"
+            "Data Ethics",
+
+            "Data Storage Technologies"
+
 
         }
 
@@ -122,7 +137,9 @@ class LearningPathOptimizer:
         return (
 
             set(skills)
+
             -
+
             noisy_skills
 
         )
@@ -132,13 +149,13 @@ class LearningPathOptimizer:
 
     # ----------------------------------------------------
     # Topological sorting
-    # Ensures prerequisites appear before skills
     # ----------------------------------------------------
 
     def topological_sort(
         self,
         skills
     ):
+
 
         ordered = []
 
@@ -148,7 +165,9 @@ class LearningPathOptimizer:
 
         def visit(skill):
 
+
             if skill in visited:
+
                 return
 
 
@@ -168,13 +187,9 @@ class LearningPathOptimizer:
 
             for prereq in prerequisites:
 
-                if (
 
-                    prereq in skills
-                    and
-                    prereq not in visited
+                if prereq in skills:
 
-                ):
 
                     visit(prereq)
 
@@ -186,6 +201,7 @@ class LearningPathOptimizer:
 
         for skill in skills:
 
+
             visit(skill)
 
 
@@ -196,7 +212,7 @@ class LearningPathOptimizer:
 
 
     # ----------------------------------------------------
-    # Generate optimized learning path
+    # Generate learning path
     # ----------------------------------------------------
 
     def generate_learning_path(
@@ -226,13 +242,18 @@ class LearningPathOptimizer:
 
 
         print(
+
             "Missing skills:",
+
             len(missing_skills)
+
         )
 
 
 
         print("\nRaw Missing Skills:")
+
+
 
         for skill in sorted(missing_skills):
 
@@ -240,8 +261,6 @@ class LearningPathOptimizer:
 
 
 
-        # Expand prerequisites
-        # Include target skill
 
         complete_skill_set = (
 
@@ -255,8 +274,6 @@ class LearningPathOptimizer:
 
 
 
-        # Remove graph noise
-
         complete_skill_set = (
 
             self.filter_noise(
@@ -269,15 +286,13 @@ class LearningPathOptimizer:
 
 
 
-        # Remove mastered skills
-
         complete_skill_set -= set(
+
             current_skills
+
         )
 
 
-
-        # Generate ordered roadmap
 
         learning_path = (
 
@@ -308,8 +323,11 @@ class LearningPathOptimizer:
 
 
         return self.generate_learning_path(
+
             current_skills,
+
             target_skill
+
         )
 
 
@@ -370,20 +388,21 @@ if __name__ == "__main__":
 
 
     for index, skill in enumerate(
+
         roadmap,
+
         start=1
+
     ):
 
 
         print(
+
             f"{index}. {skill}"
+
         )
 
 
-
-    # ------------------------------------------------
-    # Additional roadmap intelligence
-    # ------------------------------------------------
 
 
     completion_time = (
@@ -397,6 +416,25 @@ if __name__ == "__main__":
         )
 
     )
+
+
+
+    print("\n")
+
+    print("==============================")
+
+    print("ESTIMATED COMPLETION TIME")
+
+    print("==============================")
+
+
+
+    print(
+
+        completion_time
+
+    )
+
 
 
 
@@ -418,20 +456,6 @@ if __name__ == "__main__":
 
     print("==============================")
 
-    print("ESTIMATED COMPLETION TIME")
-
-    print("==============================")
-
-    print(
-        completion_time
-    )
-
-
-
-    print("\n")
-
-    print("==============================")
-
     print("DIFFICULTY PROGRESSION")
 
     print("==============================")
@@ -440,6 +464,9 @@ if __name__ == "__main__":
 
     for item in difficulty:
 
+
         print(
+
             f"{item['skill']} → {item['difficulty']}"
+
         )

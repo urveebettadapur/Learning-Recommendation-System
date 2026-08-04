@@ -11,7 +11,7 @@ class RoadmapEnhancer:
 
 
     # ----------------------------------------
-    # Calculate estimated completion time
+    # Estimate completion time
     # ----------------------------------------
 
     def estimate_completion_time(
@@ -24,16 +24,27 @@ class RoadmapEnhancer:
 
         for skill in learning_path:
 
+
             courses = (
+
                 self.engine
                 .get_courses_for_skill(skill)
+
             )
 
 
-            # temporary estimate
-            # until course metadata is connected
+            # Realistic estimation:
+            # Each skill requires approximately
+            # 8 hours of learning
 
-            total_hours += len(courses) * 5
+            if courses:
+
+                total_hours += 8
+
+            else:
+
+                total_hours += 4
+
 
 
         weeks = round(
@@ -42,14 +53,18 @@ class RoadmapEnhancer:
 
 
         return {
+
             "total_hours": total_hours,
+
             "estimated_weeks": weeks
+
         }
 
 
 
+
     # ----------------------------------------
-    # Difficulty progression
+    # Generate difficulty progression
     # ----------------------------------------
 
     def generate_difficulty_progression(
@@ -61,7 +76,9 @@ class RoadmapEnhancer:
         progression = []
 
 
-        total = len(learning_path)
+        total = len(
+            learning_path
+        )
 
 
         for index, skill in enumerate(
@@ -74,7 +91,7 @@ class RoadmapEnhancer:
                 level = "Beginner"
 
 
-            elif index < total * 0.75:
+            elif index < total * 0.85:
 
                 level = "Intermediate"
 
@@ -86,10 +103,15 @@ class RoadmapEnhancer:
 
 
             progression.append(
+
                 {
+
                     "skill": skill,
+
                     "difficulty": level
+
                 }
+
             )
 
 
