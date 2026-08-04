@@ -15,51 +15,112 @@ class LearningPathOptimizer:
 
     # ----------------------------------------------------
     # Expand missing skills with prerequisites recursively
+    # Limited depth to avoid unrelated expansion
     # ----------------------------------------------------
 
     def expand_dependencies(
         self,
-        skills
+        skills,
+        max_depth=2
     ):
 
         expanded = set()
 
-        visited = set()
 
 
+        def traverse(
+            skill,
+            depth
+        ):
 
-        def traverse(skill):
-
-            if skill in visited:
+            if depth > max_depth:
                 return
 
 
-            visited.add(skill)
+
+            if skill in expanded:
+                return
+
+
 
             expanded.add(skill)
 
 
 
             prerequisites = (
+
                 self.graph_engine
                 .get_skill_prerequisites(skill)
+
             )
 
 
 
             for prereq in prerequisites:
 
-                traverse(prereq)
+                traverse(
+                    prereq,
+                    depth + 1
+                )
 
 
 
         for skill in skills:
 
-            traverse(skill)
+            traverse(
+                skill,
+                0
+            )
 
 
 
         return expanded
+
+
+
+
+    # ----------------------------------------------------
+    # Remove unrelated graph noise
+    # ----------------------------------------------------
+
+    def filter_noise(
+        self,
+        skills
+    ):
+
+        noisy_skills = {
+
+            "Databricks",
+
+            "Cloud Solutions",
+
+            "Cloud Security",
+
+            "Amazon CloudWatch",
+
+            "Human Computer Interaction",
+
+            "Data Lakes",
+
+            "Data Architecture",
+
+            "Computer Vision",
+
+            "Data Security",
+
+            "Data Ethics"
+
+        }
+
+
+
+        return (
+
+            set(skills)
+            -
+            noisy_skills
+
+        )
 
 
 
@@ -86,20 +147,29 @@ class LearningPathOptimizer:
                 return
 
 
+
             visited.add(skill)
 
 
 
             prerequisites = (
+
                 self.graph_engine
                 .get_skill_prerequisites(skill)
+
             )
 
 
 
             for prereq in prerequisites:
 
-                if prereq in skills:
+                if (
+
+                    prereq in skills
+                    and
+                    prereq not in visited
+
+                ):
 
                     visit(prereq)
 
@@ -157,13 +227,37 @@ class LearningPathOptimizer:
 
 
 
-        # Expand hidden prerequisites
+        print("\nRaw Missing Skills:")
+
+        for skill in sorted(missing_skills):
+
+            print("-", skill)
+
+
+
+
+        # Expand prerequisites
+        # Include target skill
 
         complete_skill_set = (
 
             self.expand_dependencies(
 
-                missing_skills
+                missing_skills | {target_skill}
+
+            )
+
+        )
+
+
+
+        # Remove graph noise
+
+        complete_skill_set = (
+
+            self.filter_noise(
+
+                complete_skill_set
 
             )
 
@@ -179,7 +273,7 @@ class LearningPathOptimizer:
 
 
 
-        # Order learning sequence
+        # Generate ordered roadmap
 
         learning_path = (
 
@@ -216,6 +310,7 @@ class LearningPathOptimizer:
             current_skills,
             target_skill
         )
+
 
 
 

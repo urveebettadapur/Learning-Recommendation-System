@@ -21,7 +21,6 @@ class SkillGapDetector:
         max_depth=1
     ):
 
-
         required = set()
 
         visited = set()
@@ -75,6 +74,50 @@ class SkillGapDetector:
 
 
     # --------------------------------------
+    # Remove noisy prerequisite relationships
+    # --------------------------------------
+
+    def filter_skill_noise(
+        self,
+        skills
+    ):
+
+
+        noisy_skills = {
+
+            "Databricks",
+
+            "Cloud Solutions",
+
+            "Cloud Security",
+
+            "Amazon CloudWatch",
+
+            "Human Computer Interaction",
+
+            "Data Lakes",
+
+            "Data Architecture"
+
+        }
+
+
+
+        filtered = (
+
+            set(skills)
+            -
+            noisy_skills
+
+        )
+
+
+        return filtered
+
+
+
+
+    # --------------------------------------
     # Detect skill gap
     # --------------------------------------
 
@@ -86,10 +129,25 @@ class SkillGapDetector:
 
 
         required_skills = (
+
             self.get_required_skills(
                 target_skill
             )
+
         )
+
+
+
+        # Remove irrelevant graph noise
+
+        required_skills = (
+
+            self.filter_skill_noise(
+                required_skills
+            )
+
+        )
+
 
 
         current_skills = set(
@@ -97,11 +155,15 @@ class SkillGapDetector:
         )
 
 
+
         missing = (
+
             required_skills
             -
             current_skills
+
         )
+
 
 
         return missing
@@ -126,8 +188,10 @@ class SkillGapDetector:
 
 
             prerequisites = (
+
                 self.engine
                 .get_skill_prerequisites(skill)
+
             )
 
 
@@ -162,8 +226,10 @@ class SkillGapDetector:
 
 
             results = (
+
                 self.engine
                 .get_courses_for_skill(skill)
+
             )
 
 
@@ -213,7 +279,8 @@ if __name__ == "__main__":
     print("\nCURRENT SKILLS:")
 
     for skill in current_skills:
-        print("-",skill)
+
+        print("-", skill)
 
 
 
@@ -232,7 +299,7 @@ if __name__ == "__main__":
 
         for skill in sorted(missing):
 
-            print("-",skill)
+            print("-", skill)
 
     else:
 
@@ -248,6 +315,7 @@ if __name__ == "__main__":
     path = detector.generate_learning_path(
         missing
     )
+
 
 
     for item in path:
@@ -278,4 +346,4 @@ if __name__ == "__main__":
 
     for course in list(courses)[:10]:
 
-        print("-",course)
+        print("-", course)
