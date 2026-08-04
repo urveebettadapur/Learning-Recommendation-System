@@ -1,5 +1,7 @@
 from graph_engine import KnowledgeGraphEngine
 from skill_gap_detector import SkillGapDetector
+from roadmap_enhancer import RoadmapEnhancer
+
 
 
 class LearningPathOptimizer:
@@ -10,6 +12,8 @@ class LearningPathOptimizer:
         self.graph_engine = KnowledgeGraphEngine()
 
         self.skill_detector = SkillGapDetector()
+
+        self.roadmap_enhancer = RoadmapEnhancer()
 
 
 
@@ -87,6 +91,7 @@ class LearningPathOptimizer:
         self,
         skills
     ):
+
 
         noisy_skills = {
 
@@ -235,7 +240,6 @@ class LearningPathOptimizer:
 
 
 
-
         # Expand prerequisites
         # Include target skill
 
@@ -265,7 +269,7 @@ class LearningPathOptimizer:
 
 
 
-        # Remove already mastered skills
+        # Remove mastered skills
 
         complete_skill_set -= set(
             current_skills
@@ -294,9 +298,6 @@ class LearningPathOptimizer:
 
     # ----------------------------------------------------
     # Compatibility wrapper
-    #
-    # Required by recommendation_engine.py
-    #
     # ----------------------------------------------------
 
     def optimize_learning_path(
@@ -376,4 +377,69 @@ if __name__ == "__main__":
 
         print(
             f"{index}. {skill}"
+        )
+
+
+
+    # ------------------------------------------------
+    # Additional roadmap intelligence
+    # ------------------------------------------------
+
+
+    completion_time = (
+
+        optimizer
+        .roadmap_enhancer
+        .estimate_completion_time(
+
+            roadmap
+
+        )
+
+    )
+
+
+
+    difficulty = (
+
+        optimizer
+        .roadmap_enhancer
+        .generate_difficulty_progression(
+
+            roadmap
+
+        )
+
+    )
+
+
+
+    print("\n")
+
+    print("==============================")
+
+    print("ESTIMATED COMPLETION TIME")
+
+    print("==============================")
+
+    print(
+        completion_time
+    )
+
+
+
+    print("\n")
+
+    print("==============================")
+
+    print("DIFFICULTY PROGRESSION")
+
+    print("==============================")
+
+
+
+    for item in difficulty:
+
+        print(
+            f"{item['skill']} → {item['difficulty']}"
         )
