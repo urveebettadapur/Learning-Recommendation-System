@@ -165,41 +165,42 @@ Machine Learning:
 
 ```text
 Learning-Recommendation-System/
-
+│
+├── .venv/
 │
 ├── backend/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── .env
 │   │
 │   ├── database/
+│   │
 │   ├── models/
 │   │
 │   ├── routes/
-│   │   ├── learning_path.py
-│   │   └── recommendation.py
+│   │   ├── __init__.py
+│   │   ├── recommendation.py
+│   │   └── learning_path.py
 │   │
 │   ├── schemas/
-│   │   ├── learning_path.py
-│   │   └── recommendation.py
+│   │   ├── __init__.py
+│   │   ├── recommendation.py
+│   │   └── learning_path.py
 │   │
-│   ├── services/
-│   │   ├── learning_path_service.py
-│   │   └── recommendation_service.py
-│   │
-│   ├── .env
-│   ├── main.py
-│   └── __init__.py
-│
+│   └── services/
+│       ├── __init__.py
+│       ├── recommendation_service.py
+│       └── learning_path_service.py
 │
 ├── data/
 │   └── processed/
 │       ├── personalized_learning_processed.csv
 │       └── personalized_learning_features.csv
 │
-│
 ├── docs/
 │   ├── api_documentation.md
 │   ├── architecture.md
 │   └── database_schema.md
-│
 │
 ├── etl/
 │   ├── config.py
@@ -208,10 +209,11 @@ Learning-Recommendation-System/
 │   ├── load.py
 │   └── pipeline.py
 │
-│
 ├── frontend/
-│   │
+│   ├── node_modules/
 │   ├── public/
+│   │   ├── favicon.svg
+│   │   └── icons.svg
 │   │
 │   ├── src/
 │   │   ├── api/
@@ -225,15 +227,16 @@ Learning-Recommendation-System/
 │   │   │
 │   │   ├── services/
 │   │   │
-│   │   ├── App.jsx
 │   │   ├── App.css
+│   │   ├── App.jsx
 │   │   ├── index.css
 │   │   └── main.jsx
 │   │
 │   ├── package.json
 │   ├── package-lock.json
-│   └── vite.config.js
-│
+│   ├── vite.config.js
+│   ├── eslint.config.js
+│   └── index.html
 │
 ├── ml/
 │   │
@@ -242,7 +245,8 @@ Learning-Recommendation-System/
 │   │   │   └── personalized_learning.csv
 │   │   │
 │   │   └── processed/
-│   │       └── personalized_learning_processed.csv
+│   │       ├── personalized_learning_processed.csv
+│   │       └── personalized_learning_features.csv
 │   │
 │   ├── models/
 │   │   ├── tfidf_vectorizer.pkl
@@ -255,27 +259,28 @@ Learning-Recommendation-System/
 │   │   ├── feature_engineering.ipynb
 │   │   └── model_training.ipynb
 │   │
-│   ├── graph_builder.py
-│   ├── graph_engine.py
-│   ├── knowledge_graph.pkl
-│   ├── skill_dependency_builder.py
-│   ├── skill_gap_detector.py
-│   ├── learning_path_optimizer.py
-│   ├── roadmap_enhancer.py
+│   ├── __init__.py
+│   ├── config.py
+│   ├── train.py
+│   ├── predict.py
 │   ├── recommendation_engine.py
 │   ├── course_ranking_engine.py
-│   ├── predict.py
-│   ├── config.py
-│   └── check_columns.py
-│
+│   ├── skill_gap_detector.py
+│   ├── graph_builder.py
+│   ├── graph_engine.py
+│   ├── skill_dependency_builder.py
+│   ├── learning_path_optimizer.py
+│   ├── roadmap_enhancer.py
+│   ├── check_columns.py
+│   ├── debug_graph.py
+│   └── knowledge_graph.pkl
 │
 ├── postman/
 │   └── learning_recommendation_api.json
 │
-│
-├── requirements.txt
+├── .gitignore
 ├── README.md
-└── .gitignore
+└── requirements.txt
 
 ```
 
