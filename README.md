@@ -210,33 +210,93 @@ Learning-Recommendation-System/
 │   └── pipeline.py
 │
 ├── frontend/
+│   │
 │   ├── node_modules/
+│   │
 │   ├── public/
 │   │   ├── favicon.svg
 │   │   └── icons.svg
 │   │
 │   ├── src/
+│   │   │
 │   │   ├── api/
 │   │   │   └── api.js
 │   │   │
 │   │   ├── assets/
+│   │   │   ├── hero.png
+│   │   │   ├── react.svg
+│   │   │   └── vite.svg
 │   │   │
 │   │   ├── components/
+│   │   │   │
+│   │   │   ├── animations/
+│   │   │   │   ├── BackgroundCanvas.jsx
+│   │   │   │   ├── CursorGlow.jsx
+│   │   │   │   └── FloatingNodes.jsx
+│   │   │   │
+│   │   │   ├── common/
+│   │   │   │   ├── Button.jsx
+│   │   │   │   ├── Input.jsx
+│   │   │   │   ├── Loading.jsx
+│   │   │   │   └── Modal.jsx
+│   │   │   │
+│   │   │   ├── dashboard/
+│   │   │   │   └── DashboardOverview.jsx
+│   │   │   │
+│   │   │   ├── layout/
+│   │   │   │   ├── Footer.jsx
+│   │   │   │   └── Navbar.jsx
+│   │   │   │
+│   │   │   ├── learning/
+│   │   │   │   └── LearningPath.jsx
+│   │   │   │
+│   │   │   ├── onboarding/
+│   │   │   │   ├── OnboardingProgress.jsx
+│   │   │   │   ├── RoleSelector.jsx
+│   │   │   │   └── SkillSelector.jsx
+│   │   │   │
+│   │   │   └── roadmap/
+│   │   │       ├── LearningPath.jsx
+│   │   │       ├── ProgressOverview.jsx
+│   │   │       ├── RecommendationCard.jsx
+│   │   │       ├── SkillGraph.jsx
+│   │   │       ├── StrengthsSection.jsx
+│   │   │       └── WeaknessSection.jsx
+│   │   │
+│   │   ├── hooks/
+│   │   │   └── useLearningPath.js
 │   │   │
 │   │   ├── pages/
+│   │   │   ├── Roadmap.jsx
+│   │   │   ├── RoleSelection.jsx
+│   │   │   ├── SignIn.jsx
+│   │   │   ├── SignUp.jsx
+│   │   │   ├── Skills.jsx
+│   │   │   ├── Splash.jsx
+│   │   │   └── Welcome.jsx
 │   │   │
 │   │   ├── services/
+│   │   │   ├── authService.js
+│   │   │   └── recommendationService.js
 │   │   │
-│   │   ├── App.css
+│   │   ├── styles/
+│   │   │   ├── animations.css
+│   │   │   └── globals.css
+│   │   │
 │   │   ├── App.jsx
+│   │   ├── App.css
 │   │   ├── index.css
 │   │   └── main.jsx
 │   │
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── vite.config.js
+│   ├── utils/
+│   │
+│   ├── .gitignore
 │   ├── eslint.config.js
-│   └── index.html
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
+│   └── vite.config.js
 │
 ├── ml/
 │   │
